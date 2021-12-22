@@ -1,3 +1,5 @@
+using Business.Abstract;
+using Business.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Builder;
@@ -35,7 +37,7 @@ namespace WebAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
             });
             #region DependencyInjection
-
+            services.AddSingleton<IProductService, ProductManager>();
 
             #endregion
         }
