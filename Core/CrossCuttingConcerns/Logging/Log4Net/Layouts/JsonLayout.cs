@@ -14,7 +14,7 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net.Layouts
     {
         public override void ActivateOptions()
         {
-            
+
         }
 
         public override void Format(TextWriter writer, LoggingEvent loggingEvent)

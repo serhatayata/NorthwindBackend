@@ -3,9 +3,11 @@ using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Extensions;
 using Core.Utilities.Results;
@@ -52,13 +54,15 @@ namespace Business.Concrete
             _httpContextAccessor.HttpContext.User.ClaimRoles();
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductID == productId));
         }
+        [SecuredOperation("Product.List,Admin")]
         [PerformanceAspect(interval:5)] //5sn geçerse outputa yazdırdık.
         public IDataResult<List<Product>> GetList()
         {
-            Thread.Sleep(5000);
+            //Thread.Sleep(5000);
             return new SuccessDataResult<List<Product>>(_productDal.GetList().ToList());
         }
-        [SecuredOperation("Product.List,Admin")]
+        //[SecuredOperation("Product.List,Admin")]
+        [LogAspect(typeof(FileLogger))]
         [CacheAspect(duration:10)]
         public IDataResult<List<Product>> GetListByCategory(int categoryId)
         {

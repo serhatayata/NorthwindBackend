@@ -14,15 +14,19 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net
     public class LoggerServiceBase
     {
         //Burada log4net'e göre loglama işlemleri yapıyoruz.
-        private ILog _log; 
+        private ILog _log;
         public LoggerServiceBase(string name)
         {
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(File.OpenRead("log4net.config"));
 
-            ILoggerRepository loggerRepository = LogManager.CreateRepository(Assembly.GetExecutingAssembly(),typeof(log4net.Repository.Hierarchy.Hierarchy));
+            ILoggerRepository loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly(),
+                typeof(log4net.Repository.Hierarchy.Hierarchy));
             log4net.Config.XmlConfigurator.Configure(loggerRepository, xmlDocument["log4net"]);
+
             _log = LogManager.GetLogger(loggerRepository.Name, name);
+
+
         }
 
         //Bazı durumlarda loglamanın bazı kısımlarını kapatmak isteyebiliriz info vs. gibi,
@@ -35,37 +39,31 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net
         public void Info(object logMessage)
         {
             if (IsInfoEnabled)
-            {
                 _log.Info(logMessage);
-            }
         }
+
         public void Debug(object logMessage)
         {
             if (IsDebugEnabled)
-            {
                 _log.Debug(logMessage);
-            }
         }
+
         public void Warn(object logMessage)
         {
             if (IsWarnEnabled)
-            {
                 _log.Warn(logMessage);
-            }
         }
+
         public void Fatal(object logMessage)
         {
             if (IsFatalEnabled)
-            {
                 _log.Fatal(logMessage);
-            }
         }
+
         public void Error(object logMessage)
         {
             if (IsErrorEnabled)
-            {
                 _log.Error(logMessage);
-            }
         }
     }
 }

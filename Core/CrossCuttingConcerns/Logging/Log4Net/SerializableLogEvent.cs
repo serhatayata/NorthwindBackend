@@ -17,11 +17,6 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net
             _loggingEvent = loggingEvent;
         }
 
-        //Bu bize LoggerServiceBase'deki logMessage'yi verir.
-        public object Message => _loggingEvent.MessageObject; 
-
-
-
-
+        public object Message => _loggingEvent.MessageObject;
     }
 }
